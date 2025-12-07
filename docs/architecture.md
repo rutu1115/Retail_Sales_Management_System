@@ -85,10 +85,10 @@ Below is the full data lifecycle from load to UI:
 
 ---
 
-## 8. Folder Structure
+## 4. Folder Structure
 
 ### **Backend**
-
+''' 
 backend/
 │── data/
 │   └── sales.csv
