@@ -81,20 +81,21 @@ Below is the full data lifecycle from load to UI:
 ### **Backend Folder Structure**
 backend/
 │── data/
-│ └── sales.csv
+│   └── sales.csv
 │── src/
-│ ├── controllers/
-│ │ └── salesController.js
-│ ├── services/
-│ │ └── salesService.js
-│ ├── utils/
-│ │ └── csvLoader.js
-│ ├── query/
-│ │ └── querySales.js
-│ ├── routes/
-│ │ └── sales.js
-│ └── index.js
+│   ├── controllers/
+│   │   └── salesController.js
+│   ├── services/
+│   │   └── salesService.js
+│   ├── utils/
+│   │   └── csvLoader.js
+│   ├── query/
+│   │   └── querySales.js
+│   ├── routes/
+│   │   └── sales.js
+│   └── index.js
 └── package.json
+
 
 ---
 
@@ -102,18 +103,19 @@ backend/
 frontend/
 │── public/
 │── src/
-│ ├── components/
-│ │ ├── SearchBar.jsx
-│ │ ├── FilterPanel.jsx
-│ │ ├── SortingDropdown.jsx
-│ │ ├── TransactionsTable.jsx
-│ │ ├── PaginationControls.jsx
-│ │ └── StatCards.jsx
-│ ├── services/
-│ │ └── api.js
-│ ├── App.jsx
-│ └── main.jsx
+│   ├── components/
+│   │   ├── SearchBar.jsx
+│   │   ├── FilterPanel.jsx
+│   │   ├── SortingDropdown.jsx
+│   │   ├── TransactionsTable.jsx
+│   │   ├── PaginationControls.jsx
+│   │   └── StatCards.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── App.jsx
+│   └── main.jsx
 └── package.json
+
 ---
 
 ## 9. Module Responsibilities
