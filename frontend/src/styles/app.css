@@ -365,6 +365,50 @@ h1 {
 }
 
 /* ---------------------------------------------------
+   STAT CARDS - HORIZONTAL LINE LAYOUT
+----------------------------------------------------- */
+
+.stat-cards {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 180px;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.stat-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card .stat-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* ---------------------------------------------------
    TABLE DESIGN
 ----------------------------------------------------- */
 
@@ -647,13 +691,81 @@ h1 {
    RESPONSIVE DESIGN
 ----------------------------------------------------- */
 
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .main-grid {
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+  }
+
+  .stat-card {
+    min-width: 160px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+  body {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .filter-panel {
+    position: static;
+    max-width: 100%;
+  }
+
+  .stat-cards {
+    gap: 12px;
+  }
+
+  .stat-card {
+    min-width: 160px;
+  }
+
+  .table thead th {
+    font-size: 12px;
+    padding: 14px 12px;
+  }
+
+  .table tbody td {
+    font-size: 14px;
+    padding: 14px 12px;
+  }
+}
+
+/* Mobile landscape and small tablets */
 @media (max-width: 768px) {
   body {
     padding: 16px;
   }
 
   h1 {
-    font-size: 28px;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .search-bar {
+    padding: 14px 18px 14px 48px;
+    font-size: 15px;
+    margin-bottom: 20px;
   }
 
   .main-grid {
@@ -661,30 +773,343 @@ h1 {
     gap: 16px;
   }
 
-  .filter-panel {
-    position: static;
+  .filter-panel,
+  .right-panel {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .filter-panel h3 {
+    font-size: 18px;
   }
 
   .toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
   }
 
   .stats-summary {
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    flex: 1;
+    min-width: calc(50% - 8px);
+  }
+
+  .stat-cards {
+    gap: 12px;
+    margin: 12px 0;
+  }
+
+  .stat-card {
+    min-width: 140px;
+    padding: 14px;
+  }
+
+  .stat-title {
+    font-size: 12px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 20px;
+  }
+
+  .toolbar select {
+    width: 100%;
+    padding: 12px 16px;
   }
 
   .controls {
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  /* Table responsiveness */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 600px;
+  }
+
+  .table thead th {
+    font-size: 11px;
+    padding: 12px 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .table tbody td {
+    font-size: 13px;
+    padding: 12px 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .action-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .pagination {
     flex-wrap: wrap;
+    gap: 8px;
   }
 
   .pagination button {
     min-width: 80px;
     padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .page-info {
+    width: 100%;
+    text-align: center;
+    order: -1;
+    font-size: 14px;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+    letter-spacing: -0.3px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .search-bar {
+    padding: 12px 16px 12px 44px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+
+  .search-icon {
+    left: 14px;
+  }
+
+  .filter-panel,
+  .right-panel {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .filter-panel h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .filter-group {
+    margin-bottom: 16px;
+  }
+
+  .filter-panel input,
+  .filter-panel select {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .controls {
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .stats-summary {
+    gap: 12px;
+  }
+
+  .stat-item {
+    min-width: calc(50% - 6px);
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .stat-cards {
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .stat-card {
+    min-width: 130px;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .stat-title {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 18px;
+  }
+
+  .table {
+    min-width: 500px;
+  }
+
+  .table thead th {
+    font-size: 10px;
+    padding: 10px 8px;
+  }
+
+  .table tbody td {
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+
+  .status-badge {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+
+  .action-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .pagination {
+    gap: 6px;
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .pagination button {
+    min-width: 70px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .page-info {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  /* Reduce animations on mobile for better performance */
+  * {
+    transition: all 0.2s ease !important;
+  }
+
+  .button:hover::before,
+  .filter-panel:hover,
+  .right-panel:hover {
+    transform: none;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .search-bar {
+    padding: 10px 14px 10px 40px;
+    font-size: 13px;
+  }
+
+  .filter-panel,
+  .right-panel {
+    padding: 14px;
+  }
+
+  .filter-panel h3 {
+    font-size: 15px;
+  }
+
+  .stat-item {
+    min-width: 100%;
+  }
+
+  .stat-cards {
+    gap: 8px;
+  }
+
+  .stat-card {
+    min-width: 120px;
+    padding: 10px;
+  }
+
+  .stat-title {
+    font-size: 10px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 16px;
+  }
+
+  .table {
+    min-width: 450px;
+  }
+
+  .pagination button {
+    min-width: 60px;
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  body {
+    padding: 12px;
+  }
+
+  .filter-panel {
+    position: static;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    margin-bottom: 16px;
+  }
+
+  .search-bar {
+    margin-bottom: 16px;
   }
 }
