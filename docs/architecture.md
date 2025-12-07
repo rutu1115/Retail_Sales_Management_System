@@ -74,15 +74,6 @@ Below is the full data lifecycle from load to UI:
 - Filters (region, gender, category, age range…)
 - Sorting (date, quantity, customerName)
 - Pagination
-
-### **Response Phase**
-1. Backend returns:
-```json
-{
-  "meta": { "total", "page", "pageSize", "totalPages" },
-  "data": [ ... ]
-}
-
 ---
 
 ## 4. Folder Structure
