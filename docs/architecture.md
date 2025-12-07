@@ -79,13 +79,41 @@ Below is the full data lifecycle from load to UI:
 ## 4. Folder Structure
 
 ### **Backend Folder Structure**
-
+backend/
+│── data/
+│ └── sales.csv
+│── src/
+│ ├── controllers/
+│ │ └── salesController.js
+│ ├── services/
+│ │ └── salesService.js
+│ ├── utils/
+│ │ └── csvLoader.js
+│ ├── query/
+│ │ └── querySales.js
+│ ├── routes/
+│ │ └── sales.js
+│ └── index.js
+└── package.json
 
 ---
 
 ### **Frontend Folder Structure**
-
-
+frontend/
+│── public/
+│── src/
+│ ├── components/
+│ │ ├── SearchBar.jsx
+│ │ ├── FilterPanel.jsx
+│ │ ├── SortingDropdown.jsx
+│ │ ├── TransactionsTable.jsx
+│ │ ├── PaginationControls.jsx
+│ │ └── StatCards.jsx
+│ ├── services/
+│ │ └── api.js
+│ ├── App.jsx
+│ └── main.jsx
+└── package.json
 ---
 
 ## 9. Module Responsibilities
