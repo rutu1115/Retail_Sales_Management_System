@@ -29,16 +29,18 @@ function querySales(options) {
     const qLower = q.trim().toLowerCase();
 
     items = items.filter(item => {
-      const cname = (item.customerName || '').toLowerCase();
+      const cname = (item.customerName || '').toLowerCase().trim();
       const phone = (item.phoneNumber || item['Phone Number'] || '').toLowerCase();
 
       const nameWords = cname.split(/\s+/);
 
       const exactNameMatch = nameWords.includes(qLower);
       const exactPhoneMatch = phone === qLower;
-      const startsWithMatch = nameWords.some(w => w.startsWith(qLower));
+      const wordStartsWithMatch = nameWords.some(w => w.startsWith(qLower));
+      const fullNameStartsWithMatch = cname.startsWith(qLower);
+      
 
-      return exactNameMatch || exactPhoneMatch || startsWithMatch;
+      return exactNameMatch || exactPhoneMatch || wordStartsWithMatch || fullNameStartsWithMatch ;
     });
   }
 
