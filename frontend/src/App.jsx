@@ -4,6 +4,7 @@ import FilterPanel from './components/FilterPanel';
 import SortingDropdown from './components/SortingDropdown';
 import TransactionsTable from './components/TransactionsTable';
 import PaginationControls from './components/PaginationControls';
+import StatCards from "./components/StatCards";
 import api from './services/api';
 
 export default function App() {
@@ -67,6 +68,7 @@ export default function App() {
           <div className="toolbar">
             <SortingDropdown sort={sort} setSort={setSort} />
           </div>
+          <StatCards data={result.data} meta={result.meta} loading={loading} />
           <TransactionsTable loading={loading} data={result.data} />
           <PaginationControls
             meta={result.meta}
