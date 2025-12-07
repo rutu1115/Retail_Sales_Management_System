@@ -29,15 +29,58 @@ A modern, responsive **Retail Sales Management System** built with **React, Node
 
 ---
 
-## 🛠️ How It Works
+## **3. Search Implementation Summary**
+The backend includes a multi-level, case-insensitive search mechanism that supports:
+- First name queries — `"neha"`  
+- Last name queries — `"patil"`  
+- Full name queries — `"neha patil"`  
+- Partial multi-word queries — `"neha pa"`  
+- Exact phone number matching  
 
-1. **CSV Loader**: Backend loads and parses `sales.csv` at startup.  
-2. **API Layer**: `/api/sales` endpoint accepts query parameters for searching, sorting, filtering, and pagination.  
-3. **Search System**: Smart word-level matching to avoid partial mismatches (Neha ≠ Sneha).  
-4. **Filtering Engine**: Multi-select filters applied on region, gender, category, tags, etc.  
-5. **Sorting Logic**: Server-side sorting ensures accurate results.  
-6. **Frontend UI**: React components display search results with filters, paginated table, and sort dropdown.  
-7. **Real-Time Updates**: The frontend fetches updated records via Axios whenever filters or search terms change.
+Search is performed using:
+- Word-level `startsWith`  
+- Full-name `startsWith`  
+- Exact word match  
+- Phone equality  
+
+This ensures accurate search results even with partial inputs.
+
+---
+
+## **4. Filter Implementation Summary**
+Filters are applied sequentially and support the following fields:
+- Customer Region  
+- Gender  
+- Age Range  
+- Product Category  
+- Tags (multi-value CSV)  
+- Payment Method  
+- Date Range  
+
+Multi-select filters use sets for efficient lookups. Only rows satisfying **all active filters** are included in the final dataset.
+
+---
+
+## **5. Sorting Implementation Summary**
+The backend supports sorting by:
+- `date` (default, newest first)  
+- `quantity`  
+- `customerName`  
+- Any other field via generic fallback  
+
+Sorting uses Lodash `orderBy` for stable and reliable ascending/descending ordering.
+
+---
+
+## **6. Pagination Implementation Summary**
+Server-side pagination returns:
+{
+"total": <total-records>,
+"page": <current-page>,
+"pageSize": <rows-per-page>,
+"totalPages": <computed-pages>,
+"data": [ ...paged records ]
+}
 
 ---
 
@@ -50,10 +93,22 @@ A modern, responsive **Retail Sales Management System** built with **React, Node
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Setup Instructions
 
 ### 📦 Backend Setup
 
 ```bash
 cd backend
 npm install
+npm run dev
+
+--- 
+
+### 📦 Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+
+---
