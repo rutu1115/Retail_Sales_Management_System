@@ -87,8 +87,8 @@ Below is the full data lifecycle from load to UI:
 
 ## 4. Folder Structure
 
-### **Backend**
-''' 
+### **Backend Folder Structure**
+ 
 backend/
 │── data/
 │   └── sales.csv
@@ -106,23 +106,24 @@ backend/
 │   └── index.js
 └── package.json
 
+---
 
-### **Frontend**
+### **Frontend Folder Structure**
 
 frontend/
 │── public/
 │── src/
-│   ├── components/
-│   │   ├── SearchBar.jsx
-│   │   ├── FilterPanel.jsx
-│   │   ├── SortingDropdown.jsx
-│   │   ├── TransactionsTable.jsx
-│   │   ├── PaginationControls.jsx
-│   │   └── StatCards.jsx
-│   ├── services/
-│   │   └── api.js
-│   ├── App.jsx
-│   └── main.jsx
+│ ├── components/
+│ │ ├── SearchBar.jsx
+│ │ ├── FilterPanel.jsx
+│ │ ├── SortingDropdown.jsx
+│ │ ├── TransactionsTable.jsx
+│ │ ├── PaginationControls.jsx
+│ │ └── StatCards.jsx
+│ ├── services/
+│ │ └── api.js
+│ ├── App.jsx
+│ └── main.jsx
 └── package.json
 
 
