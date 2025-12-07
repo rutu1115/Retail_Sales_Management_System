@@ -77,7 +77,7 @@ Below is the full data lifecycle from load to UI:
 ---
 
 ## 4. Folder Structure
-
+'''
 ### **Backend Folder Structure**
 backend/
 │── data/
@@ -95,11 +95,12 @@ backend/
 │   │   └── sales.js
 │   └── index.js
 └── package.json
-
+'''
 
 ---
 
 ### **Frontend Folder Structure**
+'''
 frontend/
 │── public/
 │── src/
@@ -115,7 +116,7 @@ frontend/
 │   ├── App.jsx
 │   └── main.jsx
 └── package.json
-
+'''
 ---
 
 ## 9. Module Responsibilities
