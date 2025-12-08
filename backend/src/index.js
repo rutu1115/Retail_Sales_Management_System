@@ -1,8 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const salesRoute = require('./routes/sales');
-const csvLoader = require('./utils/csvLoader');
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
+const salesRoute = require("./routes/sales");
+const csvLoader = require("./utils/csvLoader");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -11,42 +12,50 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ---------- LOAD CSV INTO MEMORY ----------
-csvLoader.loadCSVIntoMemory(path.join(__dirname, '/../data/sales.csv'))
-  .then((records) => {
-    console.log(`Loaded ${records.length} records into memory`);
-    app.locals.sales = records;
+// Attach empty sales array by default
+app.locals.sales = [];
 
-    // Attach sales data to requests
-    app.use('/api/sales', (req, res, next) => {
-      req.salesData = app.locals.sales;
-      next();
-    }, salesRoute);
+// ---------------------- START SERVER FIRST ----------------------
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 
-    // ----------- SERVE REACT BUILD IN PRODUCTION -----------
-    const frontendPath = path.join(__dirname, '../frontend/dist');
+  // ---------- Attempt to load CSV ONLY if exists ----------
+  const csvPath = path.join(__dirname, "../data/sales.csv");
 
-    if (process.env.NODE_ENV === 'production') {
-      console.log("Serving React build...");
+  if (fs.existsSync(csvPath)) {
+    console.log("Loading CSV data...");
+    csvLoader
+      .loadCSVIntoMemory(csvPath)
+      .then((records) => {
+        app.locals.sales = records;
+        console.log(`Loaded ${records.length} records`);
+      })
+      .catch((err) =>
+        console.error("Error loading CSV (non-fatal):", err.message)
+      );
+  } else {
+    console.warn("⚠️ CSV not found — skipping sales data load");
+  }
+});
 
-      // Serve static files
-      app.use(express.static(frontendPath));
+// Attach sales to API
+app.use("/api/sales", (req, res, next) => {
+  req.salesData = app.locals.sales;
+  next();
+}, salesRoute);
 
-      // All non-API routes → index.html
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(frontendPath, 'index.html'));
-      });
-    }
+// ------------------- SERVE FRONTEND IN PRODUCTION -------------------
+const frontendPath = path.join(__dirname, "../frontend/dist");
 
-    // Start server
-    app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}`);
-    });
+if (fs.existsSync(frontendPath)) {
+  console.log("Serving frontend build...");
+  app.use(express.static(frontendPath));
 
-  })
-  .catch(err => {
-    console.error('Failed to load CSV', err);
-    process.exit(1);
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
+} else {
+  console.warn("⚠️ Frontend build not found");
+}
 
 module.exports = app;
