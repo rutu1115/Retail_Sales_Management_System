@@ -34,9 +34,6 @@ const Sale = sequelize.define(
   {
     timestamps: false,
     freezeTableName: true,
-    createdAt: false,
-    updatedAt: false,
-    id: false
   }
 );
 

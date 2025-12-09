@@ -7,42 +7,39 @@ import Sale from '../models/Sale.js';
 
 const CSV_PATH = path.join('data', 'sales.csv');
 
-function normalizeString(value) {
-  if (!value) return null;
-  return value.toString().trim().toLowerCase(); // lowercase + trim
-}
-
 function normalizeRow(row) {
+  const normalizeString = v => v?.toString().trim().toLowerCase() || null;
+  const tryNumber = v => v ? Number(v) : null;
+
   return {
-    transactionId: Number(row['Transaction ID']),
-    date: new Date(row['Date']),
+    transactionId: tryNumber(row['Transaction ID']),
+    date: row['Date'] ? new Date(row['Date']) : null,
     customerId: row['Customer ID']?.trim(),
     customerName: row['Customer Name']?.trim(),
     phoneNumber: row['Phone Number']?.trim(),
-    gender: row['Gender']?.trim().toLowerCase(),
-    age: Number(row['Age']),
-    customerRegion: row['Customer Region']?.trim().toLowerCase(),
-    customerType: row['Customer Type']?.trim().toLowerCase(),
+    gender: normalizeString(row['Gender']),
+    age: tryNumber(row['Age']),
+    customerRegion: normalizeString(row['Customer Region']),
+    customerType: normalizeString(row['Customer Type']),
     productId: row['Product ID']?.trim(),
     productName: row['Product Name']?.trim(),
-    brand: row['Brand']?.trim().toLowerCase(),
-    productCategory: row['Product Category']?.trim().toLowerCase(),
-    tags: row['Tags']?.trim().toLowerCase(),
-    quantity: Number(row['Quantity']),
-    pricePerUnit: Number(row['Price per Unit']),
-    discountPercentage: Number(row['Discount Percentage']),
-    totalAmount: Number(row['Total Amount']),
-    finalAmount: Number(row['Final Amount']),
-    paymentMethod: row['Payment Method']?.trim().toLowerCase(),
-    orderStatus: row['Order Status']?.trim().toLowerCase(),
-    deliveryType: row['Delivery Type']?.trim().toLowerCase(),
+    brand: normalizeString(row['Brand']),
+    productCategory: normalizeString(row['Product Category']),
+    tags: normalizeString(row['Tags']),
+    quantity: tryNumber(row['Quantity']),
+    pricePerUnit: tryNumber(row['Price per Unit']),
+    discountPercentage: tryNumber(row['Discount Percentage']),
+    totalAmount: tryNumber(row['Total Amount']),
+    finalAmount: tryNumber(row['Final Amount']),
+    paymentMethod: normalizeString(row['Payment Method']),
+    orderStatus: normalizeString(row['Order Status']),
+    deliveryType: normalizeString(row['Delivery Type']),
     storeId: row['Store ID']?.trim(),
-    storeLocation: row['Store Location']?.trim().toLowerCase(),
+    storeLocation: normalizeString(row['Store Location']),
     salespersonId: row['Salesperson ID']?.trim(),
     employeeName: row['Employee Name']?.trim()
   };
 }
-
 
 export async function importCSV() {
   if (!fs.existsSync(CSV_PATH)) {
@@ -53,20 +50,20 @@ export async function importCSV() {
   await sequelize.authenticate();
   await Sale.sync();
 
-  const records = [];
+  const BATCH_SIZE = 1000;
+  let batch = [];
   const parser = fs.createReadStream(CSV_PATH).pipe(parse({ columns: true, skip_empty_lines: true }));
 
   for await (const row of parser) {
-    const normalized = await normalizeRow(row);
-    records.push(normalized);
-    if (records.length >= 1000) {
-      await Sale.bulkCreate(records, { ignoreDuplicates: true });
-      records.length = 0;
+    batch.push(normalizeRow(row));
+    if (batch.length >= BATCH_SIZE) {
+      await Sale.bulkCreate(batch, { ignoreDuplicates: true });
+      batch = [];
     }
   }
 
-  if (records.length > 0) {
-    await Sale.bulkCreate(records, { ignoreDuplicates: true });
+  if (batch.length > 0) {
+    await Sale.bulkCreate(batch, { ignoreDuplicates: true });
   }
 
   console.log('CSV import complete!');

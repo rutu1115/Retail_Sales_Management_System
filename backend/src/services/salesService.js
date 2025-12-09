@@ -4,15 +4,15 @@ import Sale from '../models/Sale.js';
 function buildWhere({ q, filters = {} }) {
   const where = [];
 
-  // Search by customer name (partial match)
+  // customerName partial match (starts with)
   if (q?.trim()) {
     const qStr = q.trim().toLowerCase();
     where.push({
-      customerName: { [Op.iLike]: `%${qStr}%` }
+      customerName: { [Op.iLike]: `${qStr}%` } // starts with
     });
   }
 
-  // Filters (exact match, normalized to lowercase)
+  // exact match filters
   const addExactFilter = (field, values) => {
     if (!values?.length) return;
     const normalized = values.map(v => v.toLowerCase().trim());
@@ -21,18 +21,25 @@ function buildWhere({ q, filters = {} }) {
 
   addExactFilter('paymentMethod', filters.paymentMethods);
   addExactFilter('productCategory', filters.productCategories);
-  addExactFilter('tags', filters.tags?.flatMap(t => t.split(','))); // split multiple tags
   addExactFilter('customerRegion', filters.regions);
   addExactFilter('gender', filters.genders);
 
-  // Age
+  // tags (partial match)
+  if (filters.tags?.length) {
+    const tagsConditions = filters.tags.map(tag => ({
+      tags: { [Op.iLike]: `%${tag.toLowerCase().trim()}%` }
+    }));
+    where.push({ [Op.or]: tagsConditions });
+  }
+
+  // age
   if (filters.ageMin !== undefined || filters.ageMax !== undefined) {
     const min = filters.ageMin ?? 0;
     const max = filters.ageMax ?? 200;
     where.push({ age: { [Op.between]: [min, max] } });
   }
 
-  // Date range
+  // date range
   if (filters.dateFrom || filters.dateTo) {
     const from = filters.dateFrom ? new Date(filters.dateFrom) : new Date('1970-01-01');
     const to = filters.dateTo ? new Date(filters.dateTo) : new Date('9999-12-31');
@@ -42,17 +49,7 @@ function buildWhere({ q, filters = {} }) {
   return where.length ? { [Op.and]: where } : {};
 }
 
-
-export async function querySales(options) {
-  const {
-    q,
-    filters = {},
-    sortBy = 'date',
-    sortDir = 'desc',
-    page = 1,
-    pageSize = 10
-  } = options;
-
+export async function querySales({ q, filters = {}, sortBy = 'date', sortDir = 'desc', page = 1, pageSize = 10 }) {
   const where = buildWhere({ q, filters });
 
   const order = sortBy === 'customerName'

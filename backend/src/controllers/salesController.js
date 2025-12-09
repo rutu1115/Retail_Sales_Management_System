@@ -1,16 +1,8 @@
 import { querySales } from '../services/salesService.js';
 
-/**
- * Converts comma-separated query string into an array of trimmed, non-empty values
- * and normalizes them to lowercase for consistent filtering
- */
 function parseCSVParam(value) {
   if (!value) return undefined;
-  return value
-    .split(',')
-    .map(s => s.trim())
-    .filter(Boolean)
-    .map(s => s.toLowerCase()); // normalize to lowercase
+  return value.split(',').map(s => s.trim()).filter(Boolean);
 }
 
 export async function getSales(req, res) {
@@ -32,7 +24,6 @@ export async function getSales(req, res) {
       pageSize = 10
     } = req.query;
 
-    // Build filter object
     const filters = {
       regions: parseCSVParam(regions),
       genders: parseCSVParam(genders),
@@ -45,16 +36,7 @@ export async function getSales(req, res) {
       dateTo
     };
 
-    // Call service
-    const result = await querySales({
-      q,
-      filters,
-      sortBy,
-      sortDir,
-      page: Number(page),
-      pageSize: Number(pageSize)
-    });
-
+    const result = await querySales({ q, filters, sortBy, sortDir, page, pageSize });
     res.json(result);
   } catch (err) {
     console.error('getSales failed', err);
