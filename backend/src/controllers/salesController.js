@@ -1,11 +1,19 @@
-const salesService = require('../services/salesService');
+import { querySales } from '../services/salesService.js';
 
+/**
+ * Converts comma-separated query string into an array of trimmed, non-empty values
+ * and normalizes them to lowercase for consistent filtering
+ */
 function parseCSVParam(value) {
   if (!value) return undefined;
-  return value.split(',').map(s => s.trim()).filter(Boolean);
+  return value
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map(s => s.toLowerCase()); // normalize to lowercase
 }
 
-async function getSales(req, res) {
+export async function getSales(req, res) {
   try {
     const {
       q,
@@ -24,6 +32,7 @@ async function getSales(req, res) {
       pageSize = 10
     } = req.query;
 
+    // Build filter object
     const filters = {
       regions: parseCSVParam(regions),
       genders: parseCSVParam(genders),
@@ -36,7 +45,8 @@ async function getSales(req, res) {
       dateTo
     };
 
-    const result = await salesService.querySales({
+    // Call service
+    const result = await querySales({
       q,
       filters,
       sortBy,
@@ -51,5 +61,3 @@ async function getSales(req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
-
-module.exports = { getSales };

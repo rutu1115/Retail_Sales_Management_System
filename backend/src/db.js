@@ -1,20 +1,17 @@
-require('dotenv').config();
-const { Sequelize } = require('sequelize');
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const DATABASE_URL = process.env.DATABASE_URL;
-
-if (!DATABASE_URL) {
-  console.error('FATAL: DATABASE_URL is not set in environment');
-  process.exit(1);
-}
-
-// Disable logging unless DEBUG is set
-const sequelize = new Sequelize(DATABASE_URL, {
-  dialect: 'postgres',
-  logging: process.env.DEBUG ? console.log : false,
-  dialectOptions: {
-    // keep default
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD, // must be string
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'postgres',
+    logging: false
   }
-});
+);
 
-module.exports = sequelize;
+export default sequelize;
