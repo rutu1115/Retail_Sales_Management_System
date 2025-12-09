@@ -18,11 +18,13 @@ A modern, responsive **Retail Sales Management System** built with **React, Node
 ---
 
 ## ⚙️ Technologies Used
+## ⚙️ Technologies Used
 
 - **Frontend**: React.js, Vite, CSS3  
 - **Backend**: Node.js, Express.js  
-- **Data Source**: CSV File (In-Memory Loading)  
-- **Utilities**: Lodash, csv-parser  
+- **Database**: PostgreSQL  
+- **Data Source**: CSV File  
+- **Utilities**: csv-parse, csv-parser, Sequelize ORM  
 - **HTTP Client**: Axios  
 - **Tooling**: Nodemon, Postman  
 - **Styling**: Custom CSS with modern UI components  
