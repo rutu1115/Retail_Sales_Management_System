@@ -1,5 +1,10 @@
 const salesService = require('../services/salesService');
 
+function parseCSVParam(value) {
+  if (!value) return undefined;
+  return value.split(',').map(s => s.trim()).filter(Boolean);
+}
+
 async function getSales(req, res) {
   try {
     const {
@@ -31,8 +36,7 @@ async function getSales(req, res) {
       dateTo
     };
 
-    const result = salesService.querySales({
-      data: req.salesData,
+    const result = await salesService.querySales({
       q,
       filters,
       sortBy,
@@ -43,15 +47,9 @@ async function getSales(req, res) {
 
     res.json(result);
   } catch (err) {
-    console.error(err);
+    console.error('getSales failed', err);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
-
-function parseCSVParam(value) {
-  if (!value) return undefined;
-  // Accept comma-separated or single value
-  return value.split(',').map(s => s.trim()).filter(Boolean);
 }
 
 module.exports = { getSales };

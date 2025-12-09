@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "render-start": "node --max-old-space-size=256 src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "import:csv": "node src/utils/importCSV.js"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,10 @@
     "cors": "^2.8.5",
     "csv-parse": "^5.5.0",
     "express": "^4.21.1",
-    "lodash": "^4.17.21"
+    "dotenv": "^16.0.3",
+    "pg": "^8.11.0",
+    "lodash": "^4.17.21",
+    "sequelize": "^6.32.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
